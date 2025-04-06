@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .plants-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .plant {
+    background-color: #28892dae;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .plant img {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+  
+  .plant p {
+    margin-top: 10px;
+    font-size: 14px;
+  }

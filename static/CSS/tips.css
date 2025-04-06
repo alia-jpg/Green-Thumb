@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #466b38b6;
+    color: #fffefe;
+}
+.container {
+    max-width: 800px;
+    margin: auto;
+    background:  #28892dae;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h1, h2 {
+    color:rgb(255, 255, 255);
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+li::before {
+    content: "🌿 ";
+}

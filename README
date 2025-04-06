@@ -1,0 +1,10 @@
+# Szaki Smart Watering System 🌱
+
+This is a Raspberry Pi-powered plant watering system that:
+
+- Uses sensors (moisture, rain, water flow)
+- Has a Flask backend
+- Talks to a website hosted on Heroku
+- Lets you monitor and control watering remotely
+
+Built with love 💧🌿

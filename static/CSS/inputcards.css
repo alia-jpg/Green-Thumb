@@ -1,0 +1,168 @@
+/.input-container {
+    margin-top: 120px; 
+}
+/*Centers content and provides spacing*/
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    margin-top: 50px; /* Adjust spacing from the header */
+   padding: 20px;
+}
+/*Styles the title text */
+.content-title {
+    text-align: left;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    margin-left: 20px;
+    color: #2c5f2d; /*Dark green */
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Styles the input container*/
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Spacing between inputs and button*/
+    background: rgba(243, 244, 234, 0.953);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;/ /*Adjust width as needed */
+}
+
+/**Input field styling */
+.input-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: border 0.3s ease-in-out;
+}
+
+/* Change border color on focus*/
+.input-container input:focus {
+    border-color: #46af2f;
+}
+
+/* Button styling  */
+.input-container button {
+    width: 100%;
+    padding: 10px;
+    background: #54c43b97;
+    color: rgb(48, 164, 19);
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+/* Button hover effect */
+.input-container button:hover {
+    background: #28892dae;
+}
+
+
+.plant-card {
+    width: 200px;
+    height: 250px;
+    perspective: 1000px;
+    position: relative;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    cursor: pointer;
+}
+
+.plant-card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+/* Front Side */
+.card-front {
+    background-color:  #28892dae;
+}
+
+/* Back Side */
+.card-back {
+    background-color: #28892dae;
+    color: white;
+    transform: rotateY(180deg);
+}
+
+
+/* Moisture Bar */
+.moisture-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #6a2727e3;
+    border-radius: 5px;
+    margin-top: 10px;
+    position: relative;
+}
+
+.moisture-fill {
+    height: 100%;
+    background-color: rgb(50, 50, 166); /* Default color */
+    border-radius: 5px;
+    transition: width 0.5s, background-color 0.5s; /* Smooth transition for width and color */
+}
+
+/* Watering Button */
+.water-btn {
+    background-color: rgb(29, 139, 198);
+    color: #ffffff;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.water-btn:hover {
+    background-color: rgb(73, 167, 178);
+}
+/* Card Container (Plants Section) */
+.card-container {
+    display: flex;
+    flex-wrap:wrap;
+    gap: 80px; /* Space between cards */
+    padding: 20px;
+    max-width: calc(100% - 50px); /* Ensures wrapping occurs 50px before the border */
+}
+
+/*Individual Plant Card */
+.plant-card {
+    width: 200px;
+    height: 250px;
+    perspective: 1000px;
+    position: relative;
+}

@@ -1,0 +1,76 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px;
+    background-color: #4d983c97; /* Green background */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+body {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    background: url('logogrn.png') no-repeat center center fixed;
+    background-size: cover;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);  /**Adjust opacity (0.5 is 50%) */
+    z-index: -1;
+}
+
+/* Logo Styling */
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(241, 245, 201);
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Navigation Styling */
+.header-right a {
+    color: rgb(241, 245, 201);
+    text-decoration: none;
+    font-size: 20px;
+    margin: 10px 20px;
+    transition: color 0.3s ease-in-out;
+    font-family: 'Poppins', sans-serif;
+  
+}
+
+/**Hover & Active Effects */
+.header-right a:hover, 
+.header-right a.active {
+    color: #42f212e9; /* Gold color on hover */
+    font-weight: bold;
+}
+
+/* Responsive Design */ 
+@media screen and (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .header-right {
+        margin-top: 10px;
+    }
+    .header-right a {
+        display: block;
+        margin: 10px 0;
+    }
+}
