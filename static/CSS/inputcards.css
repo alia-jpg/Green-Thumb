@@ -86,7 +86,7 @@
     cursor: pointer;
 }
 
-.plant-card.flipped .card-inner {
+.card-inner.flipped {
     transform: rotateY(180deg);
 }
 
