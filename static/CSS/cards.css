@@ -39,7 +39,7 @@
 
 /* Back side */
 .card-back {
-    background: #4d983cb0;
+    background: #4d983cff;
     transform: rotateY(180deg);
 }
 /* Center the container */
