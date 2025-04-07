@@ -3,19 +3,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Green Thumb: Plants</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/notif.css') }}">
+  <!-- Updated paths for GitHub Pages -->
+  <link rel="stylesheet" href="static/css/header.css">
+  <link rel="stylesheet" href="static/css/notif.css">
+  <link rel="stylesheet" href="static/css/inputcards.css">
 </head>
 <body bgcolor="#aff17e">
 <div class="header">
-    <a href="{{ url_for('plants') }}" class="logo">Green Thumb: Your Plants</a>
+    <a href="index.html" class="logo">Green Thumb: Your Plants</a>
     <div class="header-right">
-      <a href="{{ url_for('home') }}">Home</a>
-      <a class="active" href="{{ url_for('plants') }}">Plants</a>
-      <a href="{{ url_for('tips') }}">Tips And Tricks</a>
+      <a href="index.html">Home</a>
+      <a class="active" href="plants.html">Plants</a>
+      <a href="tips.html">Tips And Tricks</a>
     </div>
   </div>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/inputcards.css') }}">
     <div class="content-wrapper" style="margin-top: 60px;">
       <h2 class="content-title">Add a new plant to your smart garden!</h2>
     <div class="content-wrapper">
@@ -32,7 +33,8 @@
           </div>
         </div>
 
-        <script src="{{ url_for('static', filename='js/newplant.js') }}"></script>
+        <!-- Updated path for JavaScript -->
+        <script src="static/js/newplant.js"></script>
         <script>
           document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.plant-card');
