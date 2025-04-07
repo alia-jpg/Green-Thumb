@@ -113,7 +113,7 @@
 
 /* Back Side */
 .card-back {
-    background-color: #28892dae;
+    background-color: #28892dff;
     color: white;
     transform: rotateY(180deg);
 }
