@@ -2,83 +2,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Green Thumb</title>
-  <!-- Updated paths for GitHub Pages -->
+  <title>Green Thumb: Plants</title>
   <link rel="stylesheet" href="static/css/header.css">
-  <link rel="stylesheet" href="static/css/cards.css">
-  
+  <link rel="stylesheet" href="static/css/notif.css">
 </head>
 <body bgcolor="#aff17e">
-  <div class="header">
-    <a href="index.html" class="logo">Green Thumb: Make Gardening Simple</a>
+<div class="header">
+    <a href="plants.html" class="logo">Green Thumb: Your Plants</a>
     <div class="header-right">
-      <a class="active" href="index.html">Home</a>
-      <a href="plants.html">Plants</a>
+      <a href="index.html">Home</a>
+      <a class="active" href="plants.html">Plants</a>
       <a href="tips.html">Tips And Tricks</a>
-      
     </div>
   </div>
+    <link rel="stylesheet" href="static/css/inputcards.css">
+    <div class="content-wrapper" style="margin-top: 60px;">
+      <h2 class="content-title">Add a new plant to your smart garden!</h2>
+    <div class="content-wrapper">
+        <!-- Input Fields -->
+        <div class="input-container">
+            <input type="text" id="frontText" placeholder="What's the name of your plant?">
+            <input type="text" id="backText" placeholder="What kind of plant is it?">
+            <button onclick="addCard()">Add new plant!</button>
+        </div>
 
-<div class="card-container">
-  <div class="card">
-    <div class="card-inner">
-        <div class="card-front">
-            <img src="static/img/alia.png">
-            <h2>Hărșan-Fárr Alia</h2>
+        <!-- Container for Cards -->
+        <div class="card-container" id="cardContainer">
+          
+          </div>
         </div>
-        <div class="card-back">
-            <h2>Technician</h2>
-            <p>I worked with the raspberry pi and made the database</p>
-        </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-inner">
-        <div class="card-front">
-            <h2>About</h2>
-        </div>
-        <div class="card-back">
-            <h2>About the system</h2>
-            <p>This is an ontozoberendezes blah blah blah</p>
-        </div>
-    </div>
-  </div>
 
-  <div class="card">
-    <div class="card-inner">
-        <div class="card-front">
-            <h2>Equipment</h2>
-        </div>
-        <div class="card-back">
-            <h2>The equipment we used</h2>
-            <p>raspberry pi etc</p>
-        </div>
+        <script src="static/js/newplant.js"></script>
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.plant-card');
+            cards.forEach(card => {
+              card.addEventListener('click', function() {
+                card.classList.toggle('flipped');
+              });
+            });
+        
+            // Example function to update moisture level
+            function updateMoistureLevel(element, level) {
+              const moistureFill = element.querySelector('.moisture-fill');
+              moistureFill.style.width = level + '%';
+        
+              if (level < 25) {
+                moistureFill.style.backgroundColor = 'red';
+              } else if (level < 50) {
+                moistureFill.style.backgroundColor = 'yellow';
+              } else {
+                moistureFill.style.backgroundColor = 'rgb(50, 50, 166)';
+              }
+            }
+        
+            // Example usage
+            const moistureBars = document.querySelectorAll('.moisture-bar');
+            moistureBars.forEach(bar => {
+              // Set initial moisture level (for demonstration purposes)
+              updateMoistureLevel(bar, 30); // Example level
+            });
+              // Update moisture level on some event (e.g., button click)
+              bar.addEventListener('click', function() {
+                const newLevel = Math.floor(Math.random() * 100);
+                updateMoistureLevel(bar, newLevel);
+              });
+            });
+          });
+        </script>
     </div>
-  </div>
-
-  <div class="card">
-    <div class="card-inner">
-        <div class="card-front">
-            <h2>Further developments</h2>
-        </div>
-        <div class="card-back">
-            <h2>Our goal for the future</h2>
-            <p>We have many plans blah</p>
-        </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-inner">
-        <div class="card-front">
-            <img src="static/img/favhoriz.jpg">
-            <h2>Csiki Mónika</h2>
-        </div>
-        <div class="card-back">
-            <h2>Web-designer</h2>
-            <p>I designed the web page</p>
-        </div>
-    </div>
-  </div>
-</div>
-</body>
+    </body>
 </html>
