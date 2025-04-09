@@ -30,15 +30,22 @@
     const tipsList = document.getElementById('tips-list');
     const notificationList = document.getElementById('notification-List');
   
-    plantsRef.on('value', (snapshot) => {
-      const data = snapshot.val();
-     plantsList.innerHTML = ''; // clear
-     for (let id in data) {
-        const li = document.createElement('li');
-       li.textContent = `${data[id].name} - ${data[id].type}`;
-       plantsList.appendChild(li);
-     }
-    });
+   plantsRef.on('value', (snapshot) => {
+  const data = snapshot.val();
+  const cardContainer = document.getElementById('cardContainer');
+  cardContainer.innerHTML = ''; // clear previous cards
+
+  for (let id in data) {
+    const plant = {
+      id: id,
+      name: data[id].name,
+      type: data[id].type,
+      moisture: data[id].moisture || Math.floor(Math.random() * 100) // fallback if not set
+    };
+    displayPlant(plant);
+  }
+});
+
 
     tipsRef.on('value', (snapshot) => {
       const data = snapshot.val();
