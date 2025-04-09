@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", loadPlants);
+//document.addEventListener("DOMContentLoaded", loadPlants);
 
 function addCard() {
     let plantName = document.getElementById("frontText").value;
@@ -10,20 +10,20 @@ function addCard() {
     }
 
     let plant = {
-        id: Date.now(), // unique id
         name: plantName,
         type: plantType,
         moisture: Math.floor(Math.random() * 100) // soil moisture
     };
 
-    let plants = JSON.parse(localStorage.getItem("plants")) || [];
-    plants.push(plant);
-    localStorage.setItem("plants", JSON.stringify(plants));
+    // Push to Firebase Realtime Database
+    const newPlantRef = plantsRef.push();
+    newPlantRef.set(plant);
 
-    displayPlant(plant);
+    // Clear input fields
     document.getElementById("frontText").value = "";
     document.getElementById("backText").value = "";
 }
+
 
 // Flippable plant card
 function displayPlant(plant) {
@@ -87,37 +87,35 @@ function createNotificationContainer() {
 
 // Simulated water function (updates moisture value)
 function waterPlant(id) {
-    let moistureBar = document.getElementById(`moisture-${id}`);
-    let newMoisture = Math.min(100, Math.random() * 20 + 80); // Simulated increase
+  const moistureBar = document.getElementById(`moisture-${id}`);
+  const newMoisture = Math.min(100, Math.random() * 20 + 80);
 
-    moistureBar.style.width = newMoisture + "%";
+  moistureBar.style.width = newMoisture + "%";
 
-    let plants = JSON.parse(localStorage.getItem("plants")) || [];
-    let updatedPlants = plants.map(plant => {
-        if (plant.id === id) {
-            plant.moisture = newMoisture;
-            if (newMoisture === 100) {
-                showNotification(`Watering finished for ${plant.name}`, 'success');
-            } else {
-                showNotification(`Watering started for ${plant.name}`, 'warning');
-            }
-        }
-        return plant;
-    });
+  // Update in Firebase
+  plantsRef.child(id).update({ moisture: newMoisture });
 
-    localStorage.setItem("plants", JSON.stringify(updatedPlants));
+  showNotification(`Watering ${newMoisture >= 100 ? 'finished' : 'started'} for this plant`, 'success');
 }
 
 // Remove plant function
 function removePlant(id) {
-    let plants = JSON.parse(localStorage.getItem("plants")) || [];
-    plants = plants.filter(plant => plant.id !== id);
-    localStorage.setItem("plants", JSON.stringify(plants));
-    document.querySelector(`[data-id='${id}']`).remove();
+  plantsRef.child(id).remove();
+  document.querySelector(`[data-id='${id}']`).remove();
 }
+
 
 // Load stored plants on page load
 function loadPlants() {
-    let plants = JSON.parse(localStorage.getItem("plants")) || [];
-    plants.forEach(displayPlant);
+ plantsRef.on("value", (snapshot) => {
+  const data = snapshot.val();
+  if (data) {
+    Object.keys(data).forEach(id => {
+      const plant = data[id];
+      plant.id = id; // save key as id for later use
+      displayPlant(plant);
+    });
+  }
+});
+
 }
