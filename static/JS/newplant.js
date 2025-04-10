@@ -31,6 +31,8 @@ function addCard() {
   let plantName = document.getElementById("frontText").value;
   let plantType = document.getElementById("backText").value;
 
+  console.log(plantName);
+
   if (!plantName.trim() || !plantType.trim()) {
     alert("Please enter both a plant name and type.");
     return;
