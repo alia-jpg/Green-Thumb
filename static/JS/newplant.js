@@ -1,3 +1,8 @@
+// Import required Firebase functions (for v9+ modular SDK)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+import { getDatabase } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+
+// Firebase config object
 const firebaseConfig = {
   apiKey: "AIzaSyD-4v0x1X2g3z5J6k7l8m9n0p1q2r3s4t5",
   authDomain: "green-thumb-68d25.firebaseapp.com",
@@ -8,14 +13,14 @@ const firebaseConfig = {
   appId: "1:123456789012:web:abcdef123456"
 };
 
-// Initialize Firebase (only if not already initialized)
-let app;
-if (!firebase.apps.length) {
-  app = firebase.initializeApp(firebaseConfig);
-} else {
-  app = firebase.app(); // use existing app
-}
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
+// Initialize the database and export it to be used in other modules
+const database = getDatabase(app);
+
+// Export the database to be used in other parts of the app (if needed)
+export { app, database };
 
 // Firebase references
 const database = firebase.database(app);
