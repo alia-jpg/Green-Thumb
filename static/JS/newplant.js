@@ -1,5 +1,18 @@
+// ✅ Firebase Configuration and Initialization
+const firebaseConfig = {
+  apiKey: "AIzaSyD-4v0x1X2g3z5J6k7l8m9n0p1q2r3s4t5",
+  authDomain: "greenthumb-12345.firebaseapp.com",
+  databaseURL: "https://greenthumb-12345-default-rtdb.firebaseio.com",
+  projectId: "greenthumb-12345",
+  storageBucket: "greenthumb-12345.appspot.com",
+  messagingSenderId: "123456789012",
+  appId: "1:123456789012:web:abcdef123456"
+};
+
+const app = firebase.initializeApp(firebaseConfig);
+
 // Firebase references
-const database = firebase.database();
+const database = firebase.database(app);
 const plantsRef = database.ref('plants');
 const tipsRef = database.ref('tips');
 const notificationRef = database.ref('notification');
