@@ -27,7 +27,6 @@ const plantsList = document.getElementById('plants-list');
 const tipsList = document.getElementById('tips-list');
 const notificationList = document.getElementById('notification-List');
 
-// Add new plant
 function addCard() {
   let plantName = document.getElementById("frontText").value;
   let plantType = document.getElementById("backText").value;
@@ -37,15 +36,25 @@ function addCard() {
     return;
   }
 
+  // Create a plant object with random moisture value
   let plant = {
     name: plantName,
     type: plantType,
-    moisture: Math.floor(Math.random() * 100)
+    moisture: Math.floor(Math.random() * 100) // Random moisture value
   };
 
-  const newPlantRef = plantsRef.push();
-  newPlantRef.set(plant);
+  // Push the new plant data into Firebase and update the UI
+  const newPlantRef = plantsRef.push(); // Firebase reference for new plant
+  newPlantRef.set(plant)  // Store the plant in Firebase
+    .then(() => {
+      console.log('Plant added successfully!');
+      displayPlant({ id: newPlantRef.key, ...plant }); // Call displayPlant immediately with the added data
+    })
+    .catch((error) => {
+      console.error('Error adding plant:', error);
+    });
 
+  // Clear the input fields after adding the plant
   document.getElementById("frontText").value = "";
   document.getElementById("backText").value = "";
 }
@@ -54,14 +63,16 @@ function addCard() {
 function displayPlant(plant) {
   let cardContainer = document.getElementById("cardContainer");
 
+  // Create a new card div
   let card = document.createElement("div");
   card.classList.add("plant-card");
   card.setAttribute("data-id", plant.id);
 
+  // Card content
   card.innerHTML = `
     <div class="card-inner">
       <div class="card-front" onclick="flipCard('${plant.id}')">
-        <h3>🌱 ${plant.name}</h3>
+        <h3>🌱 ${plant.name} 🌱</h3>
         <p>${plant.type}</p>
       </div>
       <div class="card-back" onclick="flipCard('${plant.id}')">
@@ -75,8 +86,10 @@ function displayPlant(plant) {
     </div>
   `;
 
+  // Append the new card to the container
   cardContainer.appendChild(card);
 }
+
 
 // Flip a plant card
 function flipCard(id) {
