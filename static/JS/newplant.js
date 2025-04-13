@@ -22,11 +22,11 @@ const database = getDatabase(app);
 // Export the database to be used in other parts of the app (if needed)
 export { app, database };
 
-// Firebase references
-const database = firebase.database(app);
-const plantsRef = database.ref('plants');
-const tipsRef = database.ref('tips');
-const notificationRef = database.ref('notification');
+const database = getDatabase(app);
+const plantsRef = ref(database, 'plants');
+const tipsRef = ref(database, 'tips');
+const notificationRef = ref(database, 'notification');
+
 
 const plantsList = document.getElementById('plants-list');
 const tipsList = document.getElementById('tips-list');
@@ -179,6 +179,3 @@ function loadPlants() {
     }
   });
 }
-
-// Call loadPlants when the page loads
-document.addEventListener("DOMContentLoaded", loadPlants);
