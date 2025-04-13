@@ -180,6 +180,5 @@ function loadPlants() {
     }
   });
 }
-
-// Load everything on startup
 loadPlants();
+window.addCard = addCard;
