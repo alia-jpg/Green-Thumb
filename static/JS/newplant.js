@@ -34,13 +34,11 @@ const tipsList = document.getElementById('tips-list');
 const notificationList = document.getElementById('notification-List');
 
 // Add a new plant
-// Attach event listener to the button
 document.getElementById('addPlantBtn').addEventListener('click', addCard);
 
-// Your existing addCard function remains the same
 function addCard() {
-  let plantName = document.getElementById("frontText").value;
-  let plantType = document.getElementById("backText").value;
+  const plantName = document.getElementById("frontText").value;
+  const plantType = document.getElementById("backText").value;
 
   if (!plantName.trim() || !plantType.trim()) {
     alert("Please enter both a plant name and type.");
@@ -54,13 +52,9 @@ function addCard() {
   };
 
   const newPlantRef = push(plantsRef);
-  set(newPlantRef, plant)
-    .then(() => {
-      displayPlant({ id: newPlantRef.key, ...plant });
-    })
-    .catch((error) => {
-      console.error("Error adding plant:", error);
-    });
+  set(newPlantRef, plant).catch((error) => {
+    console.error("Error adding plant:", error);
+  });
 
   document.getElementById("frontText").value = "";
   document.getElementById("backText").value = "";
@@ -116,11 +110,10 @@ window.waterPlant = function (id) {
 // Remove a plant
 window.removePlant = function (id) {
   const plantRef = ref(database, `plants/${id}`);
-  remove(plantRef)
-    .then(() => {
-      const card = document.querySelector(`[data-id="${id}"]`);
-      if (card) card.remove();
-    });
+  remove(plantRef).then(() => {
+    const card = document.querySelector(`[data-id="${id}"]`);
+    if (card) card.remove();
+  });
 };
 
 // Notification System
