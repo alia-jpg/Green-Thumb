@@ -1,8 +1,17 @@
-// Import required Firebase functions (for v9+ modular SDK)
+// Import Firebase (v9 modular SDK)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import { getDatabase } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+import {
+  getDatabase,
+  ref,
+  push,
+  set,
+  onValue,
+  child,
+  update,
+  remove
+} from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 
-// Firebase config object
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyD-4v0x1X2g3z5J6k7l8m9n0p1q2r3s4t5",
   authDomain: "green-thumb-68d25.firebaseapp.com",
@@ -13,69 +22,58 @@ const firebaseConfig = {
   appId: "1:123456789012:web:abcdef123456"
 };
 
-// Initialize Firebase
+// Initialize Firebase and database
 const app = initializeApp(firebaseConfig);
-
-// Initialize the database and export it to be used in other modules
 const database = getDatabase(app);
 
-// Export the database to be used in other parts of the app (if needed)
-export { app, database };
-
-const database = getDatabase(app);
+// Firebase references
 const plantsRef = ref(database, 'plants');
 const tipsRef = ref(database, 'tips');
 const notificationRef = ref(database, 'notification');
 
-
+// DOM Elements
 const plantsList = document.getElementById('plants-list');
 const tipsList = document.getElementById('tips-list');
 const notificationList = document.getElementById('notification-List');
 
+// Add a new plant
 function addCard() {
-  let plantName = document.getElementById("frontText").value;
-  let plantType = document.getElementById("backText").value;
+  const plantName = document.getElementById("frontText").value.trim();
+  const plantType = document.getElementById("backText").value.trim();
 
-  console.log(plantName);
-
-  if (!plantName.trim() || !plantType.trim()) {
+  if (!plantName || !plantType) {
     alert("Please enter both a plant name and type.");
     return;
   }
 
-  // Create a plant object with random moisture value
-  let plant = {
+  const plant = {
     name: plantName,
     type: plantType,
-    moisture: Math.floor(Math.random() * 100) // Random moisture value
+    moisture: Math.floor(Math.random() * 100)
   };
 
-  // Push the new plant data into Firebase and update the UI
-  const newPlantRef = plantsRef.push(); // Firebase reference for new plant
-  newPlantRef.set(plant)  // Store the plant in Firebase
+  const newPlantRef = push(plantsRef);
+  set(newPlantRef, plant)
     .then(() => {
       console.log('Plant added successfully!');
-      displayPlant({ id: newPlantRef.key, ...plant }); // Call displayPlant immediately with the added data
+      displayPlant({ id: newPlantRef.key, ...plant });
     })
     .catch((error) => {
       console.error('Error adding plant:', error);
     });
 
-  // Clear the input fields after adding the plant
   document.getElementById("frontText").value = "";
   document.getElementById("backText").value = "";
 }
 
-// Display a plant card
+// Display plant card
 function displayPlant(plant) {
-  let cardContainer = document.getElementById("cardContainer");
+  const cardContainer = document.getElementById("cardContainer");
 
-  // Create a new card div
-  let card = document.createElement("div");
+  const card = document.createElement("div");
   card.classList.add("plant-card");
   card.setAttribute("data-id", plant.id);
 
-  // Card content
   card.innerHTML = `
     <div class="card-inner">
       <div class="card-front" onclick="flipCard('${plant.id}')">
@@ -93,18 +91,38 @@ function displayPlant(plant) {
     </div>
   `;
 
-  // Append the new card to the container
   cardContainer.appendChild(card);
 }
 
-
-// Flip a plant card
-function flipCard(id) {
-  let card = document.querySelector(`[data-id="${id}"] .card-inner`);
-  card.classList.toggle("flipped");
+// Flip card
+window.flipCard = function(id) {
+  const card = document.querySelector(`[data-id="${id}"] .card-inner`);
+  if (card) card.classList.toggle("flipped");
 }
 
-// Notification system
+// Water plant
+window.waterPlant = function(id) {
+  const moistureBar = document.getElementById(`moisture-${id}`);
+  const newMoisture = Math.min(100, Math.random() * 20 + 80);
+  if (moistureBar) moistureBar.style.width = newMoisture + "%";
+
+  const plantRef = child(plantsRef, id);
+  update(plantRef, { moisture: newMoisture });
+
+  showNotification(`Watered plant! Moisture is now ${Math.floor(newMoisture)}%`, 'success');
+}
+
+// Remove plant
+window.removePlant = function(id) {
+  const plantRef = child(plantsRef, id);
+  remove(plantRef)
+    .then(() => {
+      const card = document.querySelector(`[data-id='${id}']`);
+      if (card) card.remove();
+    });
+}
+
+// Notification helpers
 function showNotification(message, type) {
   const container = document.querySelector('.notification-container') || createNotificationContainer();
   const notification = document.createElement('div');
@@ -124,38 +142,20 @@ function createNotificationContainer() {
   return container;
 }
 
-// Water plant
-function waterPlant(id) {
-  const moistureBar = document.getElementById(`moisture-${id}`);
-  const newMoisture = Math.min(100, Math.random() * 20 + 80);
-
-  moistureBar.style.width = newMoisture + "%";
-  plantsRef.child(id).update({ moisture: newMoisture });
-
-  showNotification(`Watering ${newMoisture >= 100 ? 'finished' : 'started'} for this plant`, 'success');
-}
-
-// Remove plant
-function removePlant(id) {
-  plantsRef.child(id).remove();
-  document.querySelector(`[data-id='${id}']`).remove();
-}
-
-// Load plants + other data from Firebase
+// Load all plants and related data
 function loadPlants() {
-  plantsRef.on("value", (snapshot) => {
+  onValue(plantsRef, (snapshot) => {
     const data = snapshot.val();
-    document.getElementById("cardContainer").innerHTML = '';
+    const container = document.getElementById("cardContainer");
+    container.innerHTML = '';
     if (data) {
       Object.keys(data).forEach(id => {
-        const plant = data[id];
-        plant.id = id;
-        displayPlant(plant);
+        displayPlant({ id, ...data[id] });
       });
     }
   });
 
-  tipsRef.on('value', (snapshot) => {
+  onValue(tipsRef, (snapshot) => {
     const data = snapshot.val();
     if (tipsList) {
       tipsList.innerHTML = '';
@@ -167,7 +167,7 @@ function loadPlants() {
     }
   });
 
-  notificationRef.on('value', (snapshot) => {
+  onValue(notificationRef, (snapshot) => {
     const data = snapshot.val();
     if (notificationList) {
       notificationList.innerHTML = '';
@@ -179,3 +179,9 @@ function loadPlants() {
     }
   });
 }
+
+// Load plants on DOM load
+document.addEventListener('DOMContentLoaded', loadPlants);
+
+// Make addCard accessible from HTML
+window.addCard = addCard;
