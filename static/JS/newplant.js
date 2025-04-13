@@ -34,6 +34,10 @@ const tipsList = document.getElementById('tips-list');
 const notificationList = document.getElementById('notification-List');
 
 // Add a new plant
+// Attach event listener to the button
+document.getElementById('addPlantBtn').addEventListener('click', addCard);
+
+// Your existing addCard function remains the same
 function addCard() {
   let plantName = document.getElementById("frontText").value;
   let plantType = document.getElementById("backText").value;
@@ -181,4 +185,3 @@ function loadPlants() {
   });
 }
 loadPlants();
-window.addCard = addCard;
