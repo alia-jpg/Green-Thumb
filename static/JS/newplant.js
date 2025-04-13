@@ -1,17 +1,16 @@
-// Import Firebase (v9 modular SDK)
+// Firebase SDK v9+ Modular Imports
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
 import {
   getDatabase,
   ref,
   push,
   set,
-  onValue,
-  child,
   update,
-  remove
+  remove,
+  onValue
 } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 
-// Firebase config
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyD-4v0x1X2g3z5J6k7l8m9n0p1q2r3s4t5",
   authDomain: "green-thumb-68d25.firebaseapp.com",
@@ -22,26 +21,24 @@ const firebaseConfig = {
   appId: "1:123456789012:web:abcdef123456"
 };
 
-// Initialize Firebase and database
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-// Firebase references
 const plantsRef = ref(database, 'plants');
 const tipsRef = ref(database, 'tips');
 const notificationRef = ref(database, 'notification');
 
-// DOM Elements
 const plantsList = document.getElementById('plants-list');
 const tipsList = document.getElementById('tips-list');
 const notificationList = document.getElementById('notification-List');
 
 // Add a new plant
 function addCard() {
-  const plantName = document.getElementById("frontText").value.trim();
-  const plantType = document.getElementById("backText").value.trim();
+  let plantName = document.getElementById("frontText").value;
+  let plantType = document.getElementById("backText").value;
 
-  if (!plantName || !plantType) {
+  if (!plantName.trim() || !plantType.trim()) {
     alert("Please enter both a plant name and type.");
     return;
   }
@@ -55,18 +52,17 @@ function addCard() {
   const newPlantRef = push(plantsRef);
   set(newPlantRef, plant)
     .then(() => {
-      console.log('Plant added successfully!');
       displayPlant({ id: newPlantRef.key, ...plant });
     })
     .catch((error) => {
-      console.error('Error adding plant:', error);
+      console.error("Error adding plant:", error);
     });
 
   document.getElementById("frontText").value = "";
   document.getElementById("backText").value = "";
 }
 
-// Display plant card
+// Display a plant card
 function displayPlant(plant) {
   const cardContainer = document.getElementById("cardContainer");
 
@@ -95,34 +91,35 @@ function displayPlant(plant) {
 }
 
 // Flip card
-window.flipCard = function(id) {
+window.flipCard = function (id) {
   const card = document.querySelector(`[data-id="${id}"] .card-inner`);
-  if (card) card.classList.toggle("flipped");
-}
+  card.classList.toggle("flipped");
+};
 
-// Water plant
-window.waterPlant = function(id) {
+// Water a plant
+window.waterPlant = function (id) {
   const moistureBar = document.getElementById(`moisture-${id}`);
-  const newMoisture = Math.min(100, Math.random() * 20 + 80);
-  if (moistureBar) moistureBar.style.width = newMoisture + "%";
+  const newMoisture = Math.min(100, Math.floor(Math.random() * 20 + 80));
 
-  const plantRef = child(plantsRef, id);
+  moistureBar.style.width = `${newMoisture}%`;
+
+  const plantRef = ref(database, `plants/${id}`);
   update(plantRef, { moisture: newMoisture });
 
-  showNotification(`Watered plant! Moisture is now ${Math.floor(newMoisture)}%`, 'success');
-}
+  showNotification(`Watering ${newMoisture >= 100 ? 'finished' : 'started'} for this plant`, 'success');
+};
 
-// Remove plant
-window.removePlant = function(id) {
-  const plantRef = child(plantsRef, id);
+// Remove a plant
+window.removePlant = function (id) {
+  const plantRef = ref(database, `plants/${id}`);
   remove(plantRef)
     .then(() => {
-      const card = document.querySelector(`[data-id='${id}']`);
+      const card = document.querySelector(`[data-id="${id}"]`);
       if (card) card.remove();
     });
-}
+};
 
-// Notification helpers
+// Notification System
 function showNotification(message, type) {
   const container = document.querySelector('.notification-container') || createNotificationContainer();
   const notification = document.createElement('div');
@@ -142,12 +139,13 @@ function createNotificationContainer() {
   return container;
 }
 
-// Load all plants and related data
+// Load all plants and lists
 function loadPlants() {
   onValue(plantsRef, (snapshot) => {
     const data = snapshot.val();
     const container = document.getElementById("cardContainer");
     container.innerHTML = '';
+
     if (data) {
       Object.keys(data).forEach(id => {
         displayPlant({ id, ...data[id] });
@@ -172,16 +170,16 @@ function loadPlants() {
     if (notificationList) {
       notificationList.innerHTML = '';
       for (let id in data) {
+        const item = data[id];
+        if (!item || !item.name || !item.type) continue;
+
         const li = document.createElement('li');
-        li.textContent = `${data[id].name} - ${data[id].type}`;
+        li.textContent = `${item.name} - ${item.type}`;
         notificationList.appendChild(li);
       }
     }
   });
 }
 
-// Load plants on DOM load
-document.addEventListener('DOMContentLoaded', loadPlants);
-
-// Make addCard accessible from HTML
-window.addCard = addCard;
+// Load everything on startup
+loadPlants();
