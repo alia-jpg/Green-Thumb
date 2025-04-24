@@ -176,5 +176,21 @@ function loadPlants() {
       }
     }
   });
+// Listen for live moisture sensor updates
+const sensorMoistureRef = ref(database, 'sensorData/moisture/value');
+
+onValue(sensorMoistureRef, (snapshot) => {
+  const moistureValue = snapshot.val();
+
+  // Log to confirm it's working
+  console.log("Live moisture reading:", moistureValue);
+
+  // Example: Update a special moisture display bar or value
+  const moistureDisplay = document.getElementById('live-moisture-value');
+  if (moistureDisplay) {
+    moistureDisplay.textContent = `${moistureValue}%`;
+  }
+});
+
 }
 loadPlants();
