@@ -44,28 +44,6 @@
   <!-- Plant interaction logic -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      function updateMoistureLevel(element, level) {
-        const moistureFill = element.querySelector('.moisture-fill');
-        moistureFill.style.width = level + '%';
-
-        if (level < 25) {
-          moistureFill.style.backgroundColor = 'red';
-        } else if (level < 50) {
-          moistureFill.style.backgroundColor = 'yellow';
-        } else {
-          moistureFill.style.backgroundColor = 'rgb(50, 50, 166)';
-        }
-      }
-
-      const moistureBars = document.querySelectorAll('.moisture-bar');
-      moistureBars.forEach(bar => {
-        updateMoistureLevel(bar, 30);
-
-        bar.addEventListener('click', function() {
-          const newLevel = Math.floor(Math.random() * 100);
-          updateMoistureLevel(bar, newLevel);
-        });
-      });
 
       const cards = document.querySelectorAll('.plant-card');
       cards.forEach(card => {
