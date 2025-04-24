@@ -48,7 +48,7 @@ function addCard() {
   const plant = {
     name: plantName,
     type: plantType,
-    moisture: Math.floor(Math.random() * 100)
+    moisture: 0
   };
 
   const newPlantRef = push(plantsRef);
