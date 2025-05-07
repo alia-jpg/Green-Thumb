@@ -188,7 +188,7 @@ onValue(sensorMoistureRef, (snapshot) => {
   // Example: Update a special moisture display bar or value
   const moistureDisplay = document.getElementById('live-moisture-value');
   if (moistureDisplay) {
-    moistureDisplay.textContent = `${moistureValue}`;
+    moistureDisplay.textContent = `${moistureValue}%`;
   }
 });
 
